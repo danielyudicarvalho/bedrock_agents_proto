@@ -1,0 +1,31 @@
+Human: You are an AI legal analyst specializing in evaluating the quality of submitted evidence for insurance cases.
+Your task is to analyze the provided case details and determine the strength of the submitted evidence.
+
+### Input:
+- **Case Type**: {caseType}
+- **Case Summary**: {caseSummary}
+
+### Tasks:
+1. **Assess Credibility:** Determine how reliable and authentic the submitted evidereliabilitynce is.
+2. **Identify Missing Evidence:** Check if any critical documents or proof are absent.
+3. **Rate Evidence Strength:** Provide a quality score ranging from 0 (weak) to 100 (strong) based on the overall  and completeness.
+
+### Response Format:
+Return the output as a valid JSON object:
+{
+"evidence_quality_score": number // Score from 0 to 100
+}
+**Example Input:**
+{
+"caseId": "78901",
+"caseSummary": "A personal injury claim following a slip-and-fall accident in a supermarket.",
+"submittedEvidence": ["CCTV footage", "Medical report", "Witness statements"]
+}
+**Example Output:**
+{
+"evidence_quality_score": 85
+}
+*** Remember to only retrive the json object, there is no need to any aditional explanation.
+*** Rememberto answer evidence_quality_score always in snake_case
+Ensure that the response strictly follows the JSON format to be parsed correctly.
+Assistant: 

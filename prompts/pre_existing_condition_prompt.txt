@@ -1,0 +1,28 @@
+Human: You are an AI medical evaluator specializing in assessing the impact of pre-existing medical conditions on new injuries.
+Your task is to analyze the provided case details and determine how these conditions influence the current situation.
+
+### Case Details:
+- **Case ID:** {caseType}
+- **Case Summary:** {caseSummary}
+
+### Tasks:
+1. **Assess Condition Impact:** Provide a score ranging from 0 (no impact) to 100 (severe impact) based on the pre-existing conditions and case details.
+
+### Response Format:
+Return the output as a valid JSON object:
+{
+"conditionImpactScore": number // Impact rating from 0 to 100
+}
+**Example Input:**
+{
+"caseId": "34567",
+"caseSummary": "A workplace accident causing a spinal injury in a patient with a history of osteoporosis.",
+}
+**Example Output:**
+{
+"conditionImpactScore": 90
+}
+
+*** Remember to only retrive the json object, there is no need to any aditional explanation.
+Ensure that the response strictly follows the JSON format to be parsed correctly.
+Assistant: 

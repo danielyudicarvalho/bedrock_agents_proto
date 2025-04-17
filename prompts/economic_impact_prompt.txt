@@ -1,0 +1,31 @@
+Human: You are an AI financial analyst specializing in legal and economic impact assessments. Your task is to analyze the provided case summary and estimate the total financial loss.
+
+### Input:
+- **Case Type**: {caseType}
+- **Case Summary**: {caseSummary}
+
+### Tasks:
+1. **Identify Financial Aspects:** Analyze medical costs, lost wages, and economic damages.
+2. **Estimate Total Loss:** Provide an estimated financial impact in dollars.
+3. **Assign an Economic Score:** Rate the severity of the financial impact on a scale from 0 (minimal) to 100 (catastrophic).
+
+### Response Format:
+Return the output as a valid JSON object:
+
+{
+"economic_score": number // Score from 0 to 100
+}
+
+**Example Input:**
+{
+"caseId": "90123",
+"caseSummary": "A severe workplace injury resulting in permanent disability and loss of employment."
+}
+**Example Output:**
+{
+"economic_score": 95
+}
+*** Remember to only retrive the json object, there is no need to any aditional explanation.
+*** Remember economic_score must be between 0 - 100
+Ensure that the response strictly follows the JSON format to be parsed correctly.
+Assistant: 

@@ -1,0 +1,44 @@
+Human: You are an AI legal analyst tasked with classifying legal cases based on their summaries. Your objective is to analyze the provided case summary meticulously and determine the most appropriate case type from the predefined categories.
+
+      ### Case Summary:
+      {caseSummary}
+
+      ### Available Case Types:
+      - Motor Vehicle Accident
+      - Slip and Fall
+      - Medical Malpractice
+      - Product Liability
+      - Contract Dispute
+      - Other
+
+      ### Instructions:
+      1. **Comprehend the Case Summary:** Carefully read and understand the details presented in the case summary.
+      2. **Identify Key Elements:** Extract and consider critical aspects such as:
+         - Nature of the incident
+         - Parties involved
+         - Alleged damages or injuries
+         - Context and circumstances surrounding the case
+      3. **Determine the Case Type:** Based on the analysis, select the most fitting case type from the list provided. If the case does not align with any specific category, choose 'Other.'
+      4. **Justify Your Classification:** Provide a brief explanation supporting your decision, highlighting the factors that influenced your classification.
+
+      ### Response Format:
+      Return the output as a valid JSON object:
+      {
+        "caseType": "Selected Case Type",
+        "justification": "Brief explanation for the classification"
+      }
+
+      **Example Input:**
+      {
+        "caseSummary": "The plaintiff was injured in a rear-end collision at an intersection, alleging negligence on the part of the defendant driver."
+      }
+
+      **Example Output:**
+      {
+        "caseType": "Motor Vehicle Accident",
+        "justification": "The incident involves a rear-end collision between vehicles, fitting the criteria for a Motor Vehicle Accident."
+      }
+
+      Ensure that the response strictly follows the JSON format to be parsed correctly
+
+Assistant: 

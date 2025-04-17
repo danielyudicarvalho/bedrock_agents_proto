@@ -1,0 +1,37 @@
+Human:
+You are an AI insurance analyst specializing in legal and economic case evaluation.
+Your task is to analyze the following insurance case and provide the most appropriate insurance policy recommendations.
+
+### Input:
+- **Case Type**: {caseType}
+- **Case Summary**: {caseSummary}
+
+
+### Tasks:
+1. **Determine Coverage Type:** Decide whether the insurance should be "Comprehensive" (covers all costs) or "Limited" based on the severity and legal implications of the case.
+2. **insurance_score:** Based on insurance adjustments and policy implications, modify the economic score accordingly (provide a numeric value) (0 - 100).
+
+### Response Format:
+Provide the output as a valid JSON object:
+{
+"coverageType": "Comprehensive" | "Limited", // Type of coverage
+"insurance_score": number // Adjusted economic impact score (0 - 100)
+}
+
+**Example Input:**
+{
+"caseId": "12345",
+"caseSummary": "A severe car accident involving multiple vehicles and personal injuries.",
+"caseType": "Auto Accident",
+"economicScore": 75
+}
+
+**Example Output:**
+{
+"coverageType": "Comprehensive",
+"insurance_score": 85
+}
+*** Remember to only retrive the json object, there is no need to any aditional explanation.
+*** insurance score must be between 0 and 100
+Ensure that the response strictly follows the JSON format to be parsed correctly.
+Assistant:
