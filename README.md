@@ -1,24 +1,24 @@
-# Projeto **AI Workflow Orchestrator**  
-_Arquitetura serverless para agentes Amazon Bedrock orquestrados por AWS Step Functions, com prompts versionados no Amazon S3 e infraestrutura declarada via AWS CDK._
+# Project **AI Workflow Orchestrator**  
+_Serverless architecture for Amazon Bedrock agents orchestrated by AWS Step Functions, with version‑controlled prompts in Amazon S3 and infrastructure declared via AWS CDK._
 
 ---
 
-## ✨ Visão Geral
-Este projeto demonstra como construir um pipeline de IA generativa totalmente serverless na AWS:
+## ✨ Overview
+This project demonstrates how to build a fully serverless generative‑AI pipeline on AWS:
 
-1. **Prompts** armazenados e versionados em **Amazon S3**.  
-2. **Agentes do Amazon Bedrock** que executam tarefas específicas (análise, sumarização, classificação etc.).  
-3. **AWS Step Functions** orquestrando a lógica de chamada dos agentes, tratamento de exceções e branching.  
-4. **AWS CDK** (TypeScript) definindo toda a infraestrutura como código, permitindo _deploy_ com um único comando.
+1. **Prompts** stored and versioned in **Amazon S3**.  
+2. **Amazon Bedrock agents** that carry out specific tasks (analysis, summarization, classification, etc.).  
+3. **AWS Step Functions** orchestrating agent calls, exception handling, and branching logic.  
+4. **AWS CDK** (TypeScript) defining all infrastructure as code, enabling deployment with a single command.
 
 ---
 
-## 🏗️ Arquitetura
+## 🏗️ Architecture
 
 ```text
  ┌────────────┐           ┌──────────────┐
- │ Usuário/   │  REST/    │ API Gateway  │
- │ Aplicação  ├──────────►│  (Opcional)  │
+ │  User /    │  REST/    │ API Gateway  │
+ │ Application├──────────►│  (Optional)  │
  └────────────┘           └──────┬───────┘
                                  │Invoke
                          ┌───────▼────────┐
@@ -32,69 +32,56 @@ Este projeto demonstra como construir um pipeline de IA generativa totalmente s
                          ├─────────────────┤
                          │ Bedrock Agent B │  (Task 2)
                          └─────────────────┘
-
 ```
-# Fluxo resumido
 
-1. A state machine lê o prompt adequado em S3.
+# Summary Flow
 
-2. Chama sequencial ou paralelamente um ou mais Agents (modelos foundation model + orchestration).
+1. The state machine reads the appropriate prompt from S3.  
+2. It invokes one or more agents (foundation model + orchestration) sequentially or in parallel.  
+3. It persists results/artifacts back to S3 or to another destination (DynamoDB, EventBridge, SNS).  
+4. It returns the response to the application (directly or through API Gateway/Lambda proxy).
 
-3. Persiste resultados/artefatos novamente no S3 ou em outro destino (DynamoDB, EventBridge, SNS).
-
-4. Retorna a resposta à aplicação (diretamente ou via API Gateway/Lambda proxy).
-
-
-📂 Estrutura de Pastas
+📂 Folder Structure
 
 ```
 .
-├── cdk/                  # Stack CDK (TypeScript)
+├── cdk/                  # CDK stack (TypeScript)
 │   ├── lib/
-│   │   └── ai-stack.ts   # Define S3, IAM, Step Functions, Bedrock    agents
+│   │   └── ai-stack.ts   # Defines S3, IAM, Step Functions, Bedrock agents
 │   └── bin/
-│       └── ai.ts         # Entry point CDK
-├── prompts/              # Prompts fonte (serão enviados ao S3)
+│       └── ai.ts         # CDK entry point
+├── prompts/              # Source prompts (uploaded to S3)
 │   ├── analyze.md
 │   └── summarize.md
-└── README.md             # (Este arquivo)
-
+└── README.md             # (This file)
 ```
 
-# 🚀 Implantação
+# 🚀 Deployment
 
+```bash
+# 1. Install dependencies
+npm install -g aws-cdk
+npm ci
+
+# 2. Configure AWS credentials and bootstrap if necessary
+cdk bootstrap
+
+# 3. Deploy
+cdk deploy AiWorkflowStack
+
+# 4. Upload prompts to the bucket
+aws s3 sync prompts/ s3://<prompt-bucket-name>/
 ```
 
-    # 1. Instalar dependências
-    npm install -g aws-cdk
-    npm ci
+# 🔄 Detailed Execution Flow
+1. **Trigger** – Can be REST (API Gateway), an S3 event, or a CloudWatch schedule.  
+2. **Step Functions**  
+   - **GetPrompt task** → S3:GetObject  
+   - **InvokeAgent task** (Map/Parallel) → Bedrock:InvokeAgent  
+   - **StoreResult task** → S3:PutObject  
+   - **Choice / Catch** for failure handling (timeout, quota, etc.).  
+3. The response is returned to the caller or posted to a queue/event.
 
-    # 2. Configurar credenciais AWS e bootstrap se necessário
-    cdk bootstrap
-
-    # 3. Fazer o deploy
-    cdk deploy AiWorkflowStack
-
-    # 4. Enviar prompts para o bucket
-    aws s3 sync prompts/ s3://<nome-do-bucket-prompts>/
-
-```
-
-# 🔄 Fluxo de Execução Detalhado
-1. Trigger – Pode ser REST (API Gateway), evento S3 ou CloudWatch Schedule.
-
-2. Step Functions:
-
-     - Task GetPrompt → S3:GetObject
-
-     - Task InvokeAgent (Map/Parallel) → Bedrock:InvokeAgent
-
-     - Task StoreResult → S3:PutObject
-
-     - Choice / Catch para tratamento de falhas (timeout, quota, etc.).
-
-3. Resposta é devolvida para quem chamou ou posta em fila/evento.
-
-📜 Licença
+📜 License
 
 MIT
